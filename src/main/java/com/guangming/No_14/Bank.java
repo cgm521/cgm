@@ -6,13 +6,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by cgm on 2017/9/21.
- * 银行实体
+ *
  */
 public class Bank {
     private ReentrantLock lock;
     private Condition funds;
     private final double[] accounts;
     private static int count =0;
+    private static int count1 =0;
 
     public Bank(int n,int account) {
         accounts = new double[n];
@@ -33,7 +34,7 @@ public class Bank {
             System.out.println(Thread.currentThread());
             accounts[from] -= amount;
             accounts[to] += amount;
-            System.out.println(from+" to "+to+" : "+amount+" 总额："+getTolte());
+            System.out.println(++count1+":"+from+" to "+to+" : "+amount+" 总额："+getTolte());
             funds.signalAll();
         }finally {
             lock.unlock();
