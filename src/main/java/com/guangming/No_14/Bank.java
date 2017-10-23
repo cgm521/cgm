@@ -1,6 +1,7 @@
 package com.guangming.No_14;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -24,12 +25,15 @@ public class Bank {
 
     //转账
     public void transfer(int from, int to, double amount) throws InterruptedException {
+        // todo tryLock设置时间，防止死锁
+//        lock.tryLock(300, TimeUnit.SECONDS);
         lock.lock();
         try {
             while (accounts[from] < amount){
                 System.out.println(++count+"await:"+accounts[from]+" < "+amount);
 //                println();
-                funds.await();
+                //todo 设置等待时间，防止死锁
+                funds.await(10, TimeUnit.SECONDS);
             }
             System.out.println(Thread.currentThread());
             accounts[from] -= amount;
